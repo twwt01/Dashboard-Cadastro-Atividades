@@ -212,44 +212,58 @@ function detectDelimiter(text){
   return semicolons>commas?";":","
 }
 
-document.getElementById("file").onchange=function(e){
-  const reader=new FileReader();
+function processCSV(text){
+  const sep=detectDelimiter(text);
+  const lines=text.split("\n").filter(l=>l.trim());
 
+  const newRows=lines.slice(1).map(l=>{
+    const c=l.split(sep).map(v=>v.trim().replace(/^"|"$/g,""));
+    return {
+      demanda:c[0]||"",
+      responsavel:c[1]||"",
+      status:normalizeStatus(c[2]),
+      detalhe:c[3]||"",
+      aguardando:c[4]||"—"
+    };
+  });
+
+  const existing=new Set(data.map(d=>d.demanda.toLowerCase().trim()));
+
+  newRows.forEach(row=>{
+    const key=row.demanda.toLowerCase().trim();
+    if(key && !existing.has(key)){
+      data.push(row);
+      existing.add(key);
+    }
+  });
+
+  current=[...data];
+
+  document.getElementById("update").innerText="Última atualização: "+formatDate();
+
+  render();
+  charts();
+}
+
+document.getElementById("file").onchange=function(e){
+  const file=e.target.files[0];
+  if(!file) return;
+
+  const reader=new FileReader();
   reader.onload=function(ev){
     const text=ev.target.result;
-    const sep=detectDelimiter(text);
-    const lines=text.split("\n").filter(l=>l.trim());
 
-    const newRows=lines.slice(1).map(l=>{
-      const c=l.split(sep).map(v=>v.trim().replace(/^"|"$/g,""));
-      return {
-        demanda:c[0]||"",
-        responsavel:c[1]||"",
-        status:normalizeStatus(c[2]),
-        detalhe:c[3]||"",
-        aguardando:c[4]||"—"
+    if(text.includes("\ufffd")){
+      const reader2=new FileReader();
+      reader2.onload=function(ev2){
+        processCSV(ev2.target.result);
       };
-    });
-
-    const existing=new Set(data.map(d=>d.demanda.toLowerCase().trim()));
-
-    newRows.forEach(row=>{
-      const key=row.demanda.toLowerCase().trim();
-      if(key && !existing.has(key)){
-        data.push(row);
-        existing.add(key);
-      }
-    });
-
-    current=[...data];
-
-    document.getElementById("update").innerText="Última atualização: "+formatDate();
-
-    render();
-    charts();
+      reader2.readAsText(file,"ISO-8859-1");
+    } else {
+      processCSV(text);
+    }
   };
-
-  reader.readAsText(e.target.files[0],"UTF-8");
+  reader.readAsText(file,"UTF-8");
 };
 
 /* INIT */
