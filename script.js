@@ -204,15 +204,24 @@ function sortTable(i){
   render();
 }
 
-/* CSV */
+/* CSV — aceita vírgula ou ponto e vírgula como separador */
+function detectDelimiter(text){
+  const firstLine=text.split("\n")[0]||"";
+  const semicolons=(firstLine.match(/;/g)||[]).length;
+  const commas=(firstLine.match(/,/g)||[]).length;
+  return semicolons>commas?";":","
+}
+
 document.getElementById("file").onchange=function(e){
   const reader=new FileReader();
 
   reader.onload=function(ev){
-    const lines=ev.target.result.split("\n").filter(l=>l.trim());
+    const text=ev.target.result;
+    const sep=detectDelimiter(text);
+    const lines=text.split("\n").filter(l=>l.trim());
 
     const newRows=lines.slice(1).map(l=>{
-      const c=l.split(",");
+      const c=l.split(sep).map(v=>v.trim().replace(/^"|"$/g,""));
       return {
         demanda:c[0]||"",
         responsavel:c[1]||"",
@@ -226,7 +235,7 @@ document.getElementById("file").onchange=function(e){
 
     newRows.forEach(row=>{
       const key=row.demanda.toLowerCase().trim();
-      if(!existing.has(key)){
+      if(key && !existing.has(key)){
         data.push(row);
         existing.add(key);
       }
@@ -240,7 +249,7 @@ document.getElementById("file").onchange=function(e){
     charts();
   };
 
-  reader.readAsText(e.target.files[0]);
+  reader.readAsText(e.target.files[0],"UTF-8");
 };
 
 /* INIT */
