@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Cadastros Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+<header>
+  <div class="left">
+    <span class="dot"></span>
+    <strong>Cadastros Dashboard</strong>
+    <span class="sub">/ Time Operacional</span>
+  </div>
+
+  <div class="right">
+    <span id="update" class="update-box"></span>
+
+    <label class="btn">
+      ⬆ Importar CSV
+      <input type="file" id="file" hidden>
+    </label>
+  </div>
+</header>
+
+<main>
+
+<div class="desc">
+📋 Acompanhamento de demandas e automações do Time de Cadastros — Status em tempo real.
+</div>
+
+<!-- KPIs -->
+<section class="kpis">
+  <div class="card blue"><span>Total Demandas</span><h2 id="total"></h2></div>
+  <div class="card yellow"><span>Aguardando</span><h2 id="aguardando"></h2></div>
+  <div class="card blue"><span>Chamados Abertos</span><h2 id="abertos"></h2></div>
+  <div class="card green"><span>Em Andamento</span><h2 id="andamento"></h2></div>
+  <div class="card purple"><span>Criado / Reunião</span><h2 id="outros"></h2></div>
+</section>
+
+<!-- GRÁFICOS -->
+<section class="charts">
+  <div class="chart-box">
+    <h3>Status por demanda</h3>
+    <canvas id="chartStatus"></canvas>
+  </div>
+
+  <div class="chart-box">
+    <h3>Demandas por responsável</h3>
+    <canvas id="chartOwner"></canvas>
+  </div>
+</section>
+
+<!-- TABELA -->
+<section class="table-box">
+
+  <div class="table-header">
+
+    <div class="title">
+      📌 <span>Demandas detalhadas</span>
+    </div>
+
+    <div class="search-box">
+      🔍
+      <input id="search" placeholder="Buscar demanda...">
+    </div>
+
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">Demanda ↑</th>
+        <th onclick="sortTable(1)">Responsável ↕</th>
+        <th onclick="sortTable(2)">Status ↕</th>
+        <th onclick="sortTable(3)">Detalhe ↕</th>
+        <th onclick="sortTable(4)">Aguardando ↕</th>
+      </tr>
+    </thead>
+    <tbody id="table"></tbody>
+  </table>
+
+</section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
