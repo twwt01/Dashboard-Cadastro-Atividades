@@ -211,7 +211,7 @@ document.getElementById("file").onchange=function(e){
   reader.onload=function(ev){
     const lines=ev.target.result.split("\n").filter(l=>l.trim());
 
-    data=lines.slice(1).map(l=>{
+    const newRows=lines.slice(1).map(l=>{
       const c=l.split(",");
       return {
         demanda:c[0]||"",
@@ -220,6 +220,16 @@ document.getElementById("file").onchange=function(e){
         detalhe:c[3]||"",
         aguardando:c[4]||"—"
       };
+    });
+
+    const existing=new Set(data.map(d=>d.demanda.toLowerCase().trim()));
+
+    newRows.forEach(row=>{
+      const key=row.demanda.toLowerCase().trim();
+      if(!existing.has(key)){
+        data.push(row);
+        existing.add(key);
+      }
     });
 
     current=[...data];
