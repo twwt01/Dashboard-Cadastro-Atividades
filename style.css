@@ -56,7 +56,24 @@ main{padding:25px;max-width:1400px;margin:auto;}
   border:1px solid #1f2a3a;
   border-radius:12px;
   padding:15px;
+  position:relative;
+  overflow:hidden;
 }
+
+.card::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:3px;
+  border-radius:12px 12px 0 0;
+}
+
+.blue::before{background:#4f7cff;}
+.yellow::before{background:#fbbf24;}
+.green::before{background:#22d3a0;}
+.purple::before{background:#a78bfa;}
 
 .card span{font-size:11px;color:#7b849a;}
 .card h2{margin:5px 0;font-size:30px;}

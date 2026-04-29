@@ -22,6 +22,8 @@ const STATUS_BADGE_CLASS = {
   reuniao:"reuniao"
 };
 
+const PALETTE = ["#4f7cff","#a78bfa","#22d3a0","#fbbf24","#f87171","#f472b6","#38bdf8","#fb923c"];
+
 const AVATAR_COLORS = {
   "Ingrid":"#4f7cff",
   "Camila":"#a78bfa",
@@ -133,7 +135,7 @@ function charts(){
       labels:labels.map(s=>STATUS_LABELS[s]||s),
       datasets:[{
         data:values,
-        backgroundColor:labels.map(s=>STATUS_COLORS[s]||"#4f7cff")
+        backgroundColor:labels.map((_,i)=>PALETTE[i%PALETTE.length])
       }]
     },
     options:{
@@ -165,10 +167,7 @@ function charts(){
       labels:owners,
       datasets:[{
         data:Object.values(ownerCount),
-        backgroundColor:owners.map(o=>{
-          const item=data.find(d=>d.responsavel===o);
-          return STATUS_COLORS[normalizeStatus(item?.status)]||"#4f7cff";
-        })
+        backgroundColor:owners.map((_,i)=>PALETTE[i%PALETTE.length])
       }]
     },
     options:{
