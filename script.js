@@ -38,7 +38,7 @@ let chartStatusInstance;
 let chartOwnerInstance;
 let activeFilter=null;
 
-let data=[
+const DEFAULT_DATA=[
   {demanda:"Assinatura Digital",responsavel:"Tiffany",status:"aguardando",detalhe:"Aguardando Leticia marcar reunião com DocSign",aguardando:"Leticia / DocSign"},
   {demanda:"Autopreenchimento & IA Fotos",responsavel:"Tiffany",status:"reuniao",detalhe:"Reunião com João Elias para avaliar opções",aguardando:"João Elias"},
   {demanda:"Cotação",responsavel:"Jhennifer",status:"aberto",detalhe:"Chamado aberto",aguardando:"— SalesForce"},
@@ -51,6 +51,19 @@ let data=[
   {demanda:"Perfil — SF para SAP",responsavel:"Jhennifer",status:"aberto",detalhe:"Automatizar Fluxo Atualizações SF → SAP",aguardando:"— SalesForce"}
 ];
 
+function loadData(){
+  const saved=localStorage.getItem("dashboard_data");
+  if(saved){
+    try{ return JSON.parse(saved); }catch(e){}
+  }
+  return [...DEFAULT_DATA];
+}
+
+function saveData(){
+  localStorage.setItem("dashboard_data",JSON.stringify(data));
+}
+
+let data=loadData();
 let current=[...data];
 let sortAsc=true;
 
@@ -238,6 +251,8 @@ function processCSV(text){
   });
 
   current=[...data];
+
+  saveData();
 
   document.getElementById("update").innerText="Última atualização: "+formatDate();
 
