@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Validador de Contatos</title>
+<link rel="stylesheet" href="validador.css">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="left">
+    <span class="dot"></span>
+    <strong>Validador de Contatos</strong>
+    <span class="sub">/ Telefone · WhatsApp · E-mail</span>
+  </div>
+  <div class="right">
+    <a href="index.html" class="link-back">← Dashboard</a>
+    <label class="btn" id="btnImport">
+      📂 Importar Planilha
+      <input type="file" id="file" accept=".csv,.xlsx,.xls" hidden>
+    </label>
+  </div>
+</header>
+
+<main>
+
+<div class="desc">
+  🔍 Suba sua planilha (CSV ou Excel) para validar automaticamente todos os campos de <b>Telefone</b>, <b>WhatsApp</b> e <b>E-mail</b>.
+</div>
+
+<!-- KPIs -->
+<section class="kpis" id="kpis" style="display:none">
+  <div class="card green"><span>Total de Linhas</span><h2 id="kpiRows">0</h2></div>
+  <div class="card blue"><span>Campos Validados</span><h2 id="kpiFields">0</h2></div>
+  <div class="card green"><span>Válidos</span><h2 id="kpiValid">0</h2></div>
+  <div class="card yellow"><span>Vazios</span><h2 id="kpiEmpty">0</h2></div>
+  <div class="card red"><span>Inválidos</span><h2 id="kpiInvalid">0</h2></div>
+</section>
+
+<!-- FILTROS -->
+<section class="filters" id="filters" style="display:none">
+  <button class="filter-btn active" data-filter="all">Todos</button>
+  <button class="filter-btn" data-filter="invalid">❌ Apenas Inválidos</button>
+  <button class="filter-btn" data-filter="valid">✔ Apenas Válidos</button>
+  <button class="filter-btn" data-filter="empty">⚪ Apenas Vazios</button>
+  <div class="filter-right">
+    <div class="search-box">
+      🔍
+      <input id="search" placeholder="Buscar...">
+    </div>
+    <button class="btn-export" id="btnExport">📥 Exportar Relatório</button>
+  </div>
+</section>
+
+<!-- TABELA -->
+<section class="table-box" id="tableBox" style="display:none">
+  <div class="table-scroll">
+    <table>
+      <thead id="thead"></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- EMPTY STATE -->
+<section class="empty-state" id="emptyState">
+  <div class="empty-icon">📄</div>
+  <h2>Nenhuma planilha importada</h2>
+  <p>Clique em <b>"📂 Importar Planilha"</b> acima para começar a validação.</p>
+  <p class="hint">Formatos aceitos: <b>.csv</b>, <b>.xlsx</b>, <b>.xls</b></p>
+</section>
+
+</main>
+
+<script src="validador.js"></script>
+</body>
+</html>
